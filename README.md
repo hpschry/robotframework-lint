@@ -14,6 +14,8 @@ The preferred method of installation is to use pip:
 
 This will install a package named "rflint", and an executable named "rflint"
 
+Install numpy, scipy and sklearn to use the redundancy checker.
+
 Running the linter
 ------------------
 
@@ -27,6 +29,8 @@ Custom rules
 Rules are simple python classes. For more information about how to
 write rules, see the 
 [robotframework-lint wiki](https://github.com/boakley/robotframework-lint/wiki)
+
+This branch applies an idea from https://stackoverflow.com/questions/8897593/similarity-between-two-text-documents for the similarity analysis of robot framework keywords.
 
 Argument files
 --------------

@@ -24,14 +24,13 @@ import glob
 import argparse
 import imp
 
-from .common import SuiteRule, ResourceRule, TestRule, KeywordRule, GeneralRule, Rule
+from .common import SuiteRule, ResourceRule, TestRule, KeywordRule, GeneralRule, PostRule, Rule
 from .common import ERROR, WARNING, IGNORE
 from .version import __version__
 from .parser import RobotFactory, SuiteFile, ResourceFile
 from .exceptions import UnknownRuleException
 
 from robot.utils.argumentparser import ArgFileParser
-
 
 class RfLint(object):
     """Robot Framework Linter"""
@@ -72,8 +71,12 @@ class RfLint(object):
         return self._get_rules(GeneralRule)
 
     @property
+    def post_rules(self):
+        return self._get_rules(PostRule)
+
+    @property
     def all_rules(self):
-        all = self.suite_rules + self.resource_rules + self.testcase_rules + self.keyword_rules + self.general_rules
+        all = self.suite_rules + self.resource_rules + self.testcase_rules + self.keyword_rules + self.general_rules + self.post_rules
         return all
 
     def run(self, args):
@@ -107,6 +110,11 @@ class RfLint(object):
                 self._process_folder(filename)
             else:
                 self._process_file(filename)
+
+        # Some post processing here
+        for rule in self.post_rules:
+            if rule.severity != IGNORE:
+                rule.apply(None)
 
         if self.counts[ERROR] > 0:
             return self.counts[ERROR] if self.counts[ERROR] < 254 else 255

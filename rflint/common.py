@@ -100,3 +100,6 @@ class GeneralRule(Rule):
     """
     pass
 
+
+class PostRule (Rule):
+    pass
