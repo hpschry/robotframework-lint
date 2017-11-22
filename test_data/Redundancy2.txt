@@ -1,0 +1,14 @@
+*** Test Cases ***
+sample
+
+*** Keywords ***
+Original
+    xyzzy
+    Fail
+    kw4711
+    hutzel
+    log
+
+Copy
+    Fail
+    xyzzy

@@ -102,4 +102,9 @@ class GeneralRule(Rule):
 
 
 class PostRule (Rule):
+    """Rule that is processed, when all other rules are applied to the input.
+
+    This type of rule can be used for processing that operates on the
+    collection of all input files.
+    """
     pass

@@ -1,0 +1,12 @@
+*** Test Cases ***
+sample
+
+*** Keywords ***
+Original
+    log    blabla
+
+Copy
+    log    blabla
+
+Not Redundant
+    Fail    xyzzy should xfail

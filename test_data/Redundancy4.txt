@@ -1,0 +1,9 @@
+*** Test Cases ***
+sample
+
+*** Keywords ***
+Original
+    zyxxy
+
+Copy
+    xyzzy
