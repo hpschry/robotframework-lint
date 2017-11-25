@@ -1,0 +1,6 @@
+* Redundancy Checks [%]
+** TODO Sort output
+** TODO Output in grep format
+** TODO Revise test for redundant names
+** TODO Make inclusion for tests in redundant bodies configurable
+** TODO Use DB (e.g. sqlite) for intermediate storage of messages (configurable)
