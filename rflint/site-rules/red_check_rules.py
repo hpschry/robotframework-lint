@@ -50,12 +50,6 @@ class StoreKW (KeywordRule):
         self.kw_list.append (keyword)
 
 
-def _format_msg (src_doc, trg_doc):
-    msg = ("High keyword body similarity - redundant?\n {} ({}, {})\n {} ({}, {})".
-           format (src_doc.name, src_doc.path,
-            src_doc.linenumber, trg_doc.name, trg_doc.path, trg_doc.linenumber))
-    return msg
-
 
 class KWRedundantName (PostRule):
     '''Determine redundant resp. similar keyword names.
@@ -82,12 +76,18 @@ class KWRedundantName (PostRule):
         kw_names = [k.name for k in StoreKW.kw_list]
         pairs = PairwiseSimilarity().find(self.cosphi_low, self.cosphi_high, kw_names)
         for pair in pairs:
-            msg = _format_msg (StoreKW.kw_list[pair[0]], StoreKW.kw_list[pair[1]])
+            msg = self._format_msg (StoreKW.kw_list[pair[0]], StoreKW.kw_list[pair[1]])
             self.report (StoreKW.kw_list[pair[0]], msg, 0)
         msg = "W: High keyword name similarity ({} <= cosphi <= {}) count is {}".format (
             self.cosphi_low, self.cosphi_high, numpy.shape(pairs)[0])
         print (msg)
         
+    def _format_msg (self, src_doc, trg_doc):
+        msg = ("High keyword name similarity - redundant?\n {} ({}, {})\n {} ({}, {})".
+               format (src_doc.name, src_doc.path,
+                src_doc.linenumber, trg_doc.name, trg_doc.path, trg_doc.linenumber))
+        return msg
+
 
 class KWRedundantBody (PostRule):
     '''Determine redundant resp. similar keyword and test implementations.
@@ -112,9 +112,15 @@ class KWRedundantBody (PostRule):
         kw_bodies = [" ".join ([r.raw_text for r in kw.rows]) for kw in doc_list if kw.steps]
         pairs = PairwiseSimilarity ().find (self.cosphi_low, self.cosphi_high, kw_bodies)
         for pair in pairs:
-            msg = _format_msg (doc_list[pair[0]], doc_list[pair[1]])
+            msg = self._format_msg (doc_list[pair[0]], doc_list[pair[1]])
             self.report (doc_list[pair[0]], msg, 0)
         msg = "W: Pairwise similarities ({} <= cosphi <= {}) count is {}".format (
             self.cosphi_low, self.cosphi_high, numpy.shape(pairs)[0])
         print (msg)
         
+    def _format_msg (self, src_doc, trg_doc):
+        msg = ("High keyword body similarity - redundant?\n {} ({}, {})\n {} ({}, {})".
+               format (src_doc.name, src_doc.path,
+                src_doc.linenumber, trg_doc.name, trg_doc.path, trg_doc.linenumber))
+        return msg
+
