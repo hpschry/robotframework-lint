@@ -109,7 +109,7 @@ class KWRedundantBody (PostRule):
     
     def apply (self, dummy):
         doc_list = StoreKW.kw_list + StoreTest.test_list
-        kw_bodies = [" ".join ([r.raw_text for r in kw.rows]) for kw in doc_list if kw.steps]
+        kw_bodies = [" ".join ([r.raw_text for r in kw.rows]) for kw in doc_list]
         pairs = PairwiseSimilarity ().find (self.cosphi_low, self.cosphi_high, kw_bodies)
         for pair in pairs:
             msg = self._format_msg (doc_list[pair[0]], doc_list[pair[1]])
