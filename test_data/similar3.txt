@@ -28,3 +28,9 @@ k5
     one
     two
     three
+
+This should be similar to B
+
+This should be similar to A
+
+This should be less similar to A

@@ -1,0 +1,6 @@
+*** Test Cases ***
+
+*** Keywords ***
+This should be similar to B
+
+This should be similar to A
