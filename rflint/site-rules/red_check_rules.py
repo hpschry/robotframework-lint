@@ -63,7 +63,8 @@ class KWRedundantName (PostRule):
     implementations).
 
     Based on the approach described in:
-    http://stackoverflow.com/questions/8897593/similarity-between-two-text-documents'''
+    http://stackoverflow.com/questions/8897593/similarity-between-two-text-documents
+    '''
 
     cosphi_low = 0.9
     cosphi_high = 1.0
@@ -77,15 +78,14 @@ class KWRedundantName (PostRule):
         pairs = PairwiseSimilarity().find(self.cosphi_low, self.cosphi_high, kw_names)
         for pair in pairs:
             msg = self._format_msg (StoreKW.kw_list[pair[0]], StoreKW.kw_list[pair[1]])
-            self.report (StoreKW.kw_list[pair[0]], msg, 0)
+            self.report (StoreKW.kw_list[pair[0]], msg, StoreKW.kw_list[pair[0]].linenumber)
         msg = "W: High keyword name similarity ({} <= cosphi <= {}) count is {}".format (
             self.cosphi_low, self.cosphi_high, numpy.shape(pairs)[0])
         print (msg)
         
     def _format_msg (self, src_doc, trg_doc):
-        msg = ("High keyword name similarity - redundant?\n {} ({}, {})\n {} ({}, {})".
-               format (src_doc.name, src_doc.path,
-                src_doc.linenumber, trg_doc.name, trg_doc.path, trg_doc.linenumber))
+        msg = ("({}) resembles ({}, {}, {})".
+               format (src_doc.name, trg_doc.name, trg_doc.path, trg_doc.linenumber))
         return msg
 
 
@@ -98,7 +98,6 @@ class KWRedundantBody (PostRule):
 
     Based on the approach described in:
     http://stackoverflow.com/questions/8897593/similarity-between-two-text-documents
-
     '''
     cosphi_low = 0.9
     cosphi_high = 1.0
@@ -113,14 +112,13 @@ class KWRedundantBody (PostRule):
         pairs = PairwiseSimilarity ().find (self.cosphi_low, self.cosphi_high, kw_bodies)
         for pair in pairs:
             msg = self._format_msg (doc_list[pair[0]], doc_list[pair[1]])
-            self.report (doc_list[pair[0]], msg, 0)
+            self.report (doc_list[pair[0]], msg, doc_list[pair[0]].linenumber)
         msg = "W: Pairwise similarities ({} <= cosphi <= {}) count is {}".format (
             self.cosphi_low, self.cosphi_high, numpy.shape(pairs)[0])
         print (msg)
         
     def _format_msg (self, src_doc, trg_doc):
-        msg = ("High keyword body similarity - redundant?\n {} ({}, {})\n {} ({}, {})".
-               format (src_doc.name, src_doc.path,
-                src_doc.linenumber, trg_doc.name, trg_doc.path, trg_doc.linenumber))
+        msg = ("({}) body resembles ({}, {}, {})".
+               format (src_doc.name, trg_doc.name, trg_doc.path, trg_doc.linenumber))
         return msg
 

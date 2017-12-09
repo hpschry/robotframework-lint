@@ -2,6 +2,7 @@
 rflint - a lint-like tool for robot framework plain text files
 
 Copyright 2014-2015 Bryan Oakley
+Modifications copyright 2017 Hans-Peter Schreiter
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

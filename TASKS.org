@@ -1,6 +1,13 @@
-* Redundancy Checks [%]
+#+STARTUP: showall
+#+TITLE: Intended Improvments
+
+* Redundancy Checks [12%]
 ** TODO Sort output
 ** TODO Output in grep format
+- may be already possible with a format string on the command line
 ** TODO Revise test for redundant names
-** TODO Make inclusion for tests in redundant bodies configurable
+** DONE Make inclusion for tests in redundant bodies configurable
 ** TODO Use DB (e.g. sqlite) for intermediate storage of messages (configurable)
+** TODO Separate controller (for printing) from Rflint
+** TODO Use logger?
+** TODO Re-enable file name printing for redundancy checks
