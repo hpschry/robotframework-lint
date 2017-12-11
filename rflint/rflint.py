@@ -189,6 +189,9 @@ class RfLint(object):
                 for line in rule.doc.split("\n"):
                     print("    ", line)
 
+    def set_print_filename (self, fn):
+        self._print_filename = fn
+
     def report(self, linenumber, filename, severity, message, rulename, char):
         """Report a rule violation"""
 
