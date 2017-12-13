@@ -1,7 +1,7 @@
 #+STARTUP: showall
 #+TITLE: Intended Improvments
 
-* Redundancy Checks [12%]
+* Redundancy Checks [10%]
 ** TODO Sort output
 ** TODO Output in grep format
 - may be already possible with a format string on the command line
@@ -11,3 +11,16 @@
 ** TODO Separate controller (for printing) from Rflint
 ** TODO Use logger?
 ** TODO Re-enable file name printing for redundancy checks
+** TODO Relative keyword redundancy
+- Redundancies found / all keyword count?
+** TODO Ignore bodies too short 
+- e.g. shorter than 2 statements
+
+
+* Other 
+** TODO Reasonable use of GIVEN, WHEN THEN
+- e.g. each only once per test case
+- order correct?
+- ... 
+** TODO If bdd style GIVEN, WHEN, THEN missing 
+- or forgotten for individual statements

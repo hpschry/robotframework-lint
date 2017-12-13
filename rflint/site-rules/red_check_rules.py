@@ -114,12 +114,12 @@ class KWRedundantBody (PostRule):
         doc_list = StoreKW.kw_list + StoreTest.test_list
         kw_bodies = [" ".join ([r.raw_text for r in kw.rows]) for kw in doc_list]
         pairs = PairwiseSimilarity ().find (self.cosphi_low, self.cosphi_high, kw_bodies)
-        old_filename_index = -1
+        old_doc_path = ""
         for pair in pairs:
             msg = self._format_msg (doc_list[pair[0]], doc_list[pair[1]])
-            if pair[0] != old_filename_index:
+            if doc_list[pair[0]].path != old_doc_path:
                 self.controller.set_print_filename(doc_list[pair[0]].path)
-                old_filename_index = pair[0]
+                old_doc_path = doc_list[pair[0]].path
             self.report (doc_list[pair[0]], msg, doc_list[pair[0]].linenumber)
         msg = "W: Pairwise similarities ({} <= cosphi <= {}) count is {}".format (
             self.cosphi_low, self.cosphi_high, numpy.shape(pairs)[0])
