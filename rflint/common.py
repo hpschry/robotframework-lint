@@ -100,7 +100,6 @@ class GeneralRule(Rule):
     """
     pass
 
-
 class PostRule (Rule):
     """Rule that is processed, when all other rules are applied to the input.
 
@@ -108,3 +107,4 @@ class PostRule (Rule):
     collection of all input files.
     """
     pass
+

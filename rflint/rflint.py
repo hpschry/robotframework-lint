@@ -190,6 +190,7 @@ class RfLint(object):
                     print("    ", line)
 
     def set_print_filename (self, fn):
+        """Force set filename"""
         self._print_filename = fn
 
     def report(self, linenumber, filename, severity, message, rulename, char):

@@ -1,16 +1,17 @@
 #+STARTUP: showall
 #+TITLE: Intended Improvments
 
-* Redundancy Checks [10%]
+* Redundancy Checks [20%]
 ** TODO Sort output
 ** TODO Output in grep format
 - may be already possible with a format string on the command line
 ** TODO Revise test for redundant names
-** DONE Make inclusion for tests in redundant bodies configurable
+** DONE Make inclusion of tests in redundant bodies configurable
+- test bodies will always be included in the comparison
 ** TODO Use DB (e.g. sqlite) for intermediate storage of messages (configurable)
 ** TODO Separate controller (for printing) from Rflint
 ** TODO Use logger?
-** TODO Re-enable file name printing for redundancy checks
+** DONE Re-enable file name printing for redundancy checks
 ** TODO Relative keyword redundancy
 - Redundancies found / all keyword count?
 ** TODO Ignore bodies too short 
@@ -24,3 +25,4 @@
 - ... 
 ** TODO If bdd style GIVEN, WHEN, THEN missing 
 - or forgotten for individual statements
+** TODO Update the license in new files
