@@ -1,0 +1,7 @@
+*** Test Cases ***
+short
+    log    Hi!
+
+*** Keywords ***
+similar to tc short
+    log    Hi!

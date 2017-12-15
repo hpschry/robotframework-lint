@@ -19,6 +19,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 """
+import re
+
+from robot.api import logger
 from rflint.common import Rule, TestRule, KeywordRule, GeneralRule, PostRule, ERROR, WARNING
 from rflint.parser.rfkeyword import Keyword
 from rflint.parser.testcase import Testcase
@@ -26,8 +29,6 @@ from rflint.parser.testcase import Testcase
 from numpy import finfo, argwhere, logical_and, nonzero, fill_diagonal, sort
 import numpy
 from sklearn.feature_extraction.text import TfidfVectorizer
-
-import re
 
 
 class PairwiseSimilarityRule(Rule):
@@ -64,7 +65,7 @@ class PairwiseSimilarityRule(Rule):
             sorted_similars = similars[similars[:,0].argsort()]
             return sorted_similars
         except ValueError as e:
-            print ("Error in processing document collection: " + str(e))
+            logger.trace("Error in processing document collection: " + str(e))
             return numpy.array([])
 
     def report_pair(self, doc_ref, obj, message, linenum, char_offset=0):
@@ -119,7 +120,7 @@ class KWRedundantName (PostRule, PairwiseSimilarityRule):
     cosphi_low = 0.9
     cosphi_high = 1.0
 
-    def __init__(self, controller, severity=None):
+    def __init__(self, controller, severity=WARNING):
         super (KWRedundantName, self).__init__(controller, severity)
 
     def configure (self, low, high):
@@ -136,10 +137,11 @@ class KWRedundantName (PostRule, PairwiseSimilarityRule):
                    format(src_doc.name, trg_doc.name, trg_doc.path,
                           trg_doc.linenumber))
             self.report_pair(src_doc.path, src_doc, msg, src_doc.linenumber)
-        msg = "High keyword name similarity ({} <= cosphi <= {}) count is {}".format(
-            self.cosphi_low, self.cosphi_high, numpy.shape(pairs)[0])
-        # print (msg)
-        self.report(DummyObject(), msg, 0, 0)
+        if numpy.shape(pairs)[0] > 0:
+            msg = "High keyword name similarity ({} <= cosphi <= {}) count is {}".format(
+                self.cosphi_low, self.cosphi_high, numpy.shape(pairs)[0])
+            # print (msg)
+            self.report(DummyObject(), msg, 0, 0)
         
 
 class KWRedundantBody (PostRule, PairwiseSimilarityRule):
@@ -150,7 +152,7 @@ class KWRedundantBody (PostRule, PairwiseSimilarityRule):
     implementations (copies).
 
     '''
-    cosphi_low = 0.9
+    cosphi_low = 0.95
     cosphi_high = 1.0
 
     def __init__(self, controller, severity=None):
@@ -172,7 +174,8 @@ class KWRedundantBody (PostRule, PairwiseSimilarityRule):
                    format(src_doc.name, trg_doc.name, trg_doc.path,
                           trg_doc.linenumber))
             self.report_pair(src_doc.path, src_doc, msg, src_doc.linenumber)
-        msg = "Pairwise similarities ({} <= cosphi <= {}) count is {}".format(
-            self.cosphi_low, self.cosphi_high, numpy.shape(pairs)[0])
-        self.report(DummyObject(), msg, 0, 0)
+        if numpy.shape(pairs)[0] > 0:
+            msg = "Pairwise similarities ({} <= cosphi <= {}) count is {}".format(
+                self.cosphi_low, self.cosphi_high, numpy.shape(pairs)[0])
+            self.report(DummyObject(), msg, 0, 0)
         

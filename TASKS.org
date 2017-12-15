@@ -1,7 +1,7 @@
 #+STARTUP: showall
 #+TITLE: Intended Improvments
 
-* Redundancy Checks [20%]
+* Redundancy Checks [15%]
 ** TODO Sort output
 ** TODO Output in grep format
 - may be already possible with a format string on the command line
@@ -16,7 +16,10 @@
 - Redundancies found / all keyword count?
 ** TODO Ignore bodies too short 
 - e.g. shorter than 2 statements
-
+** TODO Check linenumbers
+- with call: d:\devel\robotframework-lint>d:\apps\python27_64\python.exe -m rflint --format "{severity}: {linenumber}, {char}: {message} ({rulename})" --format "{severity}: {linenumber}, {char}: {message} ({rulename})" --configure TooFewTestSteps:1 --ignore PeriodInTestName tests/acceptance/rules/TooManyTestCases.robot  
+** TODO Create tests for redundancy checks
+** TODO Make KWRedundant* rules severity configurable
 
 * Other 
 ** TODO Reasonable use of GIVEN, WHEN THEN

@@ -1,0 +1,13 @@
+*** Settings ***
+Documentation     Tests for the testcase rule 'TooManyTestCases'
+Test Teardown     Run keyword if    "${TEST STATUS}" == "FAIL"    log    ${result.stdout}\n${result.stderr}    # provide some debugging information if things go bad
+Resource          ../SharedKeywords.robot
+
+*** Test Cases ***
+Redundant Bodies
+    [Documentation]    Verify that a test suite with too many test cases triggers the rule.
+    [Setup]    Run rf-lint with the following options:    --no-filename    --ignore    all    --error    KWRedundantBody
+    ...    test_data/acceptance/rules/RedundantBodies.txt
+    rflint return code should be    1
+    rflint should report 1 errors
+    rflint should report 0 warnings
