@@ -3,7 +3,9 @@ Welcome to Robot Framework Lint
 
 Static analysis for robot framework plain text files. 
 
-This is a static analysis tool for robot framework plain text files. 
+This is a static analysis tool for robot framework plain text files.
+
+This version includes checker rules for detecting keyword name similarity and for the detection of redundant keyword and test bodies, possibly indicating redundant, may be copied code, in test and keyword implementations. The rules are configurable with regard to what is detected as similar.
 
 Installation Instructions
 -------------------------
@@ -14,7 +16,7 @@ The preferred method of installation is to use pip:
 
 This will install a package named "rflint", and an executable named "rflint"
 
-Install numpy, scipy and sklearn to use the redundancy checker.
+Install numpy, scipy and scikit learn (sklearn) to use the redundancy checkers (KWRedundantBody, KWRedundantName).
 
 Running the linter
 ------------------
@@ -23,14 +25,20 @@ To run, use the command "rflint", or use the `-m` option to python to
 run the rflint module. Add one or more filenames as arguments, and
 those files will be checked for rule violations.
 
+Use the Redundancy Checkers
+---------------------------
+
+In this fork the redundancy checker rules are part of the overall rule set.
+
+* As the checkers are run after all files are processed, currently their output will be at the end of the log.
+* File names will possibly appear multiple times in the log, if the redundancy checkers are run.
+
 Custom rules
 ------------
 
 Rules are simple python classes. For more information about how to
 write rules, see the 
 [robotframework-lint wiki](https://github.com/boakley/robotframework-lint/wiki)
-
-This branch applies an idea from https://stackoverflow.com/questions/8897593/similarity-between-two-text-documents for the similarity analysis of robot framework keywords.
 
 Argument files
 --------------

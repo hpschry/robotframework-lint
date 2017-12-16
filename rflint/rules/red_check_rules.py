@@ -2,7 +2,7 @@
 Redundancy check rules for rflint
 
 Keyword name similarity detection, 
-Test and keyword body similarity detection
+Test body and keyword body similarity detection
 
 Copyright 2017 Hans-Peter Schreiter
 
@@ -19,16 +19,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 """
+import logging
 import re
-
-from robot.api import logger
-from rflint.common import Rule, TestRule, KeywordRule, GeneralRule, PostRule, ERROR, WARNING
-from rflint.parser.rfkeyword import Keyword
-from rflint.parser.testcase import Testcase
 
 from numpy import finfo, argwhere, logical_and, nonzero, fill_diagonal, sort
 import numpy
 from sklearn.feature_extraction.text import TfidfVectorizer
+
+from rflint.common import Rule, TestRule, KeywordRule, GeneralRule, PostRule, ERROR, WARNING
+from rflint.parser.rfkeyword import Keyword
+from rflint.parser.testcase import Testcase
 
 
 class PairwiseSimilarityRule(Rule):
@@ -65,7 +65,11 @@ class PairwiseSimilarityRule(Rule):
             sorted_similars = similars[similars[:,0].argsort()]
             return sorted_similars
         except ValueError as e:
-            logger.trace("Error in processing document collection: " + str(e))
+            # If the match algorithm is called on an empty document
+            # collection, e.g. in case of empty input files, it throws
+            # an exception that is reported on stderr, but does not
+            # terminate execution.
+            logging.warning("Error in processing document collection: " + str(e))
             return numpy.array([])
 
     def report_pair(self, doc_ref, obj, message, linenum, char_offset=0):
@@ -117,7 +121,7 @@ class KWRedundantName (PostRule, PairwiseSimilarityRule):
 
     '''
 
-    cosphi_low = 0.9
+    cosphi_low = 0.95
     cosphi_high = 1.0
 
     def __init__(self, controller, severity=WARNING):

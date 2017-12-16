@@ -106,6 +106,4 @@ class PostRule (Rule):
     This type of rule can be used for processing that operates on the
     collection of all input files.
     """
-    def __init__(self, controller, severity=None):
-        super (PostRule, self).__init__(controller, severity)
 

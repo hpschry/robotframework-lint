@@ -1,0 +1,44 @@
+*** Settings ***
+Documentation     This suite has various combinations of similar implementations for tests and bodies.
+...
+...               May be used to the rules ``'KWRedundantBody`` and ``KWRedundantName``.
+
+*** Test Cases ***
+test one
+    No Operation
+    log    Some stuff
+    Return From Keyword    a value
+
+test two
+    ${t}=    get time
+    should be equal    a    b
+    Set Suite Documentation    Some new documentation    append=True
+
+test one two
+    ${t}=    get time
+    should be equal    a    b
+    Set Suite Documentation    Some new documentation    append=True
+    No Operation
+    log    Some stuff
+    Return From Keyword    a value
+
+do the test
+    log    xyzzy
+
+*** Keywords ***
+kw similar to test one
+    log    Some stuff
+    Return From Keyword    a value
+
+kw equal to test one
+    No Operation
+    log    Some stuff
+    Return From Keyword    a value
+
+kw equal to test one2
+    No Operation
+    log    Some stuff
+    Return From Keyword    a value
+
+do the test
+    fail    something completely different

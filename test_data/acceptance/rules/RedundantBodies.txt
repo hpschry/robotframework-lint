@@ -5,3 +5,6 @@ short
 *** Keywords ***
 similar to tc short
     log    Hi!
+
+do the test
+    fail    something completely different

@@ -1,0 +1,35 @@
+*** Settings ***
+Documentation     Tests for the testcase rule ``KWRedundantName``.
+Test Teardown     Run keyword if    "${TEST STATUS}" == "FAIL"    log    ${result.stdout}\n${result.stderr}    # provide some debugging information if things go bad
+Resource          ../SharedKeywords.robot
+
+*** Test Cases ***
+Empty Input
+    [Documentation]    Verifies that empty input generates a warning.
+    ...
+    ...    If the match algorithm is called on an empty document collection, e.g. in case of empty input files, it throws an exception that is reported on stderr, but does not terminate execution.
+    [Setup]    Run rf-lint with the following options:    --no-filename    --ignore    all    --error    KWRedundantName
+    ...    --warning    StoreKW    --warning    StoreTest    test_data/acceptance/rules/RedundantBodiesEmptyInput.txt
+    rflint return code should be    0
+    rflint should report 0 errors
+    rflint should report 0 warnings
+    Stderr should be    WARNING:root:Error in processing document collection: empty vocabulary; perhaps the documents only contain stop words
+
+Various Combinations Narrow Range
+    [Documentation]    Verifies name similarity detection with a narrow (default) range.
+    [Setup]    Run rf-lint with the following options:    --no-filename    --ignore    all    --error    KWRedundantName
+    ...    --warning    StoreKW    --warning    StoreTest    test_data/acceptance/rules/RedundantBodiesNamesVarious.txt    test_data/acceptance/rules/RedundantBodies.txt
+    rflint return code should be    2
+    rflint should report 2 errors
+    rflint should report 0 warnings
+    Output should contain    *High keyword name similarity (0.95 <= cosphi <= 1.0) count is 1 (KWRedundantName)*    *do the test) resembles (do the test,*
+
+Various Combinations Wider Range
+    [Documentation]    Verifies name similarity detection with a wider range.
+    [Setup]    Run rf-lint with the following options:    --no-filename    --ignore    all    --error    KWRedundantName
+    ...    --warning    StoreKW    --warning    StoreTest    --configure    KWRedundantName:0.5:1.0
+    ...    test_data/acceptance/rules/RedundantBodiesNamesVarious.txt
+    rflint return code should be    3
+    rflint should report 3 errors
+    rflint should report 0 warnings
+    Output should contain    *High keyword name similarity (0.5 <= cosphi <= 1.0) count is 2 (KWRedundantName)*    *(kw similar to test one) resembles (kw equal to test one,*    *(kw equal to test one) resembles (kw equal to test one2,*

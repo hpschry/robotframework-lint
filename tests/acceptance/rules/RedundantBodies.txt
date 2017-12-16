@@ -1,13 +1,44 @@
 *** Settings ***
-Documentation     Tests for the testcase rule 'TooManyTestCases'
+Documentation     Tests for the testcase rule 'KWRedundantBody'
 Test Teardown     Run keyword if    "${TEST STATUS}" == "FAIL"    log    ${result.stdout}\n${result.stderr}    # provide some debugging information if things go bad
 Resource          ../SharedKeywords.robot
 
 *** Test Cases ***
-Redundant Bodies
-    [Documentation]    Verify that a test suite with too many test cases triggers the rule.
+Simple And Short
+    [Documentation]    Verify that a short keyword body resembles a short test.
     [Setup]    Run rf-lint with the following options:    --no-filename    --ignore    all    --error    KWRedundantBody
-    ...    test_data/acceptance/rules/RedundantBodies.txt
-    rflint return code should be    1
-    rflint should report 1 errors
+    ...    --warning    StoreKW    --warning    StoreTest    test_data/acceptance/rules/RedundantBodies.txt
+    rflint return code should be    2
+    rflint should report 2 errors
     rflint should report 0 warnings
+
+Empty Input
+    [Documentation]    Verifies that empty input generates a warning.
+    ...
+    ...    If the match algorithm is called on an empty document collection, e.g. in case of empty input files, it throws an exception that is reported on stderr, but does not terminate execution.
+    [Setup]    Run rf-lint with the following options:    --no-filename    --ignore    all    --error    KWRedundantBody
+    ...    --warning    StoreKW    --warning    StoreTest    test_data/acceptance/rules/RedundantBodiesEmptyInput.txt
+    rflint return code should be    0
+    rflint should report 0 errors
+    rflint should report 0 warnings
+    Stderr should be    WARNING:root:Error in processing document collection: empty vocabulary; perhaps the documents only contain stop words
+
+Various Combinations Narrow Range
+    [Documentation]    Verifies similarity detection with a narrow (default) range.
+    [Setup]    Run rf-lint with the following options:    --no-filename    --ignore    all    --error    KWRedundantBody
+    ...    --warning    StoreKW    --warning    StoreTest    test_data/acceptance/rules/RedundantBodiesNamesVarious.txt
+    rflint return code should be    4
+    rflint should report 4 errors
+    rflint should report 0 warnings
+    Output should contain    *Pairwise similarities (0.95 <= cosphi <= 1.0) count is 3 (KWRedundantBody)*    *(kw equal to test one) body resembles (kw equal to test one2,*    *(kw equal to test one) body resembles (test one,*    *(kw equal to test one2) body resembles (test one,*
+
+Various Combinations Wider Range
+    [Documentation]    Verifies similarity detection with a wider range.
+    [Setup]    Run rf-lint with the following options:    --no-filename    --ignore    all    --error    KWRedundantBody
+    ...    --warning    StoreKW    --warning    StoreTest    --configure    KWRedundantBody:0.7:1.0
+    ...    test_data/acceptance/rules/RedundantBodiesNamesVarious.txt
+    rflint return code should be    8
+    rflint should report 8 errors
+    rflint should report 0 warnings
+    Output should contain    *Pairwise similarities (0.7 <= cosphi <= 1.0) count is 7 (KWRedundantBody)*    *(kw equal to test one) body resembles (kw equal to test one2,*    *(kw equal to test one) body resembles (test one,*    *(kw equal to test one2) body resembles (test one,*    *(kw similar to test one) body resembles (kw equal to test one,*    *(kw similar to test one) body resembles (kw equal to test one2,*
+    ...    *(kw similar to test one) body resembles (test one,*    *(test two) body resembles (test one two,*

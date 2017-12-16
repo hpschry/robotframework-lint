@@ -1,0 +1,4 @@
+*** Settings ***
+Documentation     Empty - beyond this documentation - by intent.
+
+*** Test Cases ***

@@ -29,3 +29,4 @@
 ** TODO If bdd style GIVEN, WHEN, THEN missing 
 - or forgotten for individual statements
 ** TODO Update the license in new files
+** TODO Check test data for line too long rule, seems to be os dependent
