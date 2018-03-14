@@ -56,14 +56,26 @@ tests/acceptance/rules/TrailingBlankLines.robot
     0
 
 *** Keywords ***
-Run rflint and verify there are no errors or warnings
-    [Arguments]    ${expected_rc}
-    [Documentation]    Run rflint against the rflint tests
-    ...
-    ...    Note: it is assumed that the test name is the path of the file to test
-    Run rf-lint with the following options:    --format    {severity}: {linenumber}, {char}: {message} ({rulename})    --configure    TooFewTestSteps:1    --ignore    PeriodInTestName
-    ...    --ignore    KWRedundantBody    ${test name}    # because the test cases reference filenames, they all have    # periods in their name...    # KWRedundantBody find similar bodies
-    @{messages}=    Split to lines    ${result.stdout}
-    ${warnings}=    Get match count    ${messages}    regexp=^W:
-    ${errors}=    Get match count    ${messages}    regexp=^E:
-    Run keyword if    "${result.rc}" != "${expected_rc}" or ${warnings} != 0 or ${errors} != 0    Fail    unexpectected errors or warnings: \n${result.stdout}\n${result.stderr}
+| Run rflint and verify there are no errors or warnings
+| | [Arguments] | ${expected_rc}
+| | [Documentation]
+| | ... | Run rflint against the rflint tests
+| | ... |
+| | ... | Note: it is assumed that the test name is the path of the file to test
+| |
+| | Run rf-lint with the following options:
+| | ... | --format | {severity}: {linenumber}, {char}: {message} ({rulename})
+| | ... | --configure | TooFewTestSteps:1
+| | ... | # because the test cases reference filenames, they all have
+| | ... | # periods in their name...
+| | ... | --ignore | PeriodInTestName
+| | ... | # KWRedundantBody find similar bodies
+| | ... | --ignore | KWRedundantBody
+| | ... | ${test name}
+| |
+| | @{messages}= | Split to lines | ${result.stdout}
+| | ${warnings}= | Get match count | ${messages} | regexp=^W:
+| | ${errors}=   | Get match count | ${messages} | regexp=^E:
+| |
+| | Run keyword if | "${result.rc}" != "${expected_rc}" or ${warnings} != 0 or ${errors} != 0
+| | ... | Fail | unexpectected errors or warnings: \n${result.stdout}\n${result.stderr}
